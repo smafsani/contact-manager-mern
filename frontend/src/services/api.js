@@ -16,6 +16,12 @@ export const addContact = async (data) => {
         const response = await axios.post(`${URL}/create`, data);
         return [200, response.data.contact];
     } catch (error) {
+        if(error.response.status === 300){
+            if(('existing' in error.response.data) && error.response.data.existing === true){
+                return [300, error.response.data.error, error.response.data.contact];
+            }
+            return [400, error.response.data.error];
+        }
         return [400, error.response.data.error];
     }
 };

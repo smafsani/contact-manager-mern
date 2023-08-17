@@ -15,9 +15,9 @@ const addToContact = async (req, res) => {
         if(!phone){
             return res.status(400).json({error: "You must provide a phone number."});
         }
-        const alreadyAdded = Contact.findOne({phone : {$elemMatch: {$eq : phone}}});
+        const alreadyAdded = await Contact.findOne({phone : {$elemMatch: {$eq : phone}}});
         if(alreadyAdded){
-            return res.status(400).json({error: "Phone number already added."});
+            return res.status(300).json({error: "Phone number already added.", existing: true, contact: alreadyAdded});
         }
         let mainName = name;
         if(!name){
