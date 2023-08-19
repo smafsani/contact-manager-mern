@@ -6,6 +6,7 @@ import { Navbar } from './components/Navbar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Contacts } from './components/Contacts';
 import { AddContact } from './components/AddContact';
+import { EditContact } from './components/EditContact';
 
 const StyledCard = styled(Card)`
     background-color: transparent;
@@ -25,6 +26,7 @@ function App() {
                                 <Route path='/contacts' element={<Contacts />} />
                                 <Route path='/about' element={<About />} />
                                 <Route path='/add-contact' element={<AddContact />} />
+                                <Route path='/edit-contact/:id' element={<EditContact />} />
                             </Routes>
                         </CardContent>
                     </StyledCard>

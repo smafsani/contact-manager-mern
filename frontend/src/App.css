@@ -75,3 +75,7 @@ body{
 .authButton.active{
   background: #0363c4 !important;
 }
+
+.phoneMatched{
+  background: #b4d3f1 !important;
+}
