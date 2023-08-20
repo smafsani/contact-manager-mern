@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const HistorySchema = mongoose.Schema({
 
     receiver: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Contact', 
         required: true
     },
 

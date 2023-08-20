@@ -1,4 +1,5 @@
 const Contact = require("../models/Contact");
+const History = require("../models/History");
 
 const getContacts = async (req, res) => {
     try {
@@ -108,6 +109,40 @@ const deleteContact = async (req, res) => {
     }
 };
 
+const addToHistory = async (req, res) => {
+    try {
+        const {to, type, message, date} = req.body;
+        if(!to || !type){
+            return res.status(400).json({error: "Cannot be added to history!"});
+        }
+        const contact = await Contact.findById(to);
+        if(!contact){
+            return res.status(400).json({error: "Cannot be added to history!"});
+        }
+        const newHistory = new History({
+            receiver: contact._id,
+            contactType: type,
+            message: message,
+            date : date
+        });
+        await newHistory.save();
+        const histories = await History.find().populate('receiver');
+        return res.status(200).json({histories});
+    } catch (error) {
+        // console.log(error);
+        res.status(400).json({error: "Cannot be added to history!"});   
+    }
+}
+
+const getHistories = async (req, res) => {
+    try {
+        const histories = await History.find().populate('receiver');
+        res.status(200).json({histories});
+    } catch (error) {
+        res.status(400).json({error: "No Data Found"});
+    }
+};
+
 module.exports = {
     getContacts,
     addToContact,
@@ -115,5 +150,7 @@ module.exports = {
     getContactBySearch,
     editContact,
     deleteContact,
-    checkNumber
+    addToHistory,
+    checkNumber,
+    getHistories
 }

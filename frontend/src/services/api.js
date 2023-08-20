@@ -66,8 +66,25 @@ export const searchByNumber = async (value) => {
         const response = await axios.get(`${URL}/search/${value}`);
         return [200, response.data.contacts];
     } catch (error) {
-        console.log(error);
         return [400, "No Data Found"];
         
+    }
+};
+
+export const getHistories = async () => {
+    try {
+        const response = await axios.get(`${URL}/histories`);
+        return [200, response.data.histories];
+    } catch (error) {
+        return [400, error.response.data.error];
+    }
+};
+
+export const addToHistory = async (data) => {
+    try {
+        const response = await axios.post(`${URL}/history/store`, data);
+        return [200, response.data.histories];
+    } catch (error) {
+        return [400, "Cannot be added to history!"];
     }
 };
