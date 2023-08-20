@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Contacts } from './components/Contacts';
 import { AddContact } from './components/AddContact';
 import { EditContact } from './components/EditContact';
+import { Histories } from './components/Histories';
 
 const StyledCard = styled(Card)`
     background-color: transparent;
@@ -27,6 +28,7 @@ function App() {
                                 <Route path='/about' element={<About />} />
                                 <Route path='/add-contact' element={<AddContact />} />
                                 <Route path='/edit-contact/:id' element={<EditContact />} />
+                                <Route path='/history' element={<Histories />} />
                             </Routes>
                         </CardContent>
                     </StyledCard>

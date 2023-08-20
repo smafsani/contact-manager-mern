@@ -13,6 +13,7 @@ const style = {
     bgcolor: '#fff',
     boxShadow: 24,
     p: 4,
+    outline: 'none'
 };
 
 export const CustomModal = (props) => {

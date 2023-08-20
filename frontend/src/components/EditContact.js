@@ -85,6 +85,7 @@ export const EditContact = () => {
     const [success, setSuccess] = useState({ status: 0, message: '' });
     const [existingContact, setExistingContact] = useState([0, {}]);
     const queryParams = useParams();
+    const [isLoading, setIsLoading] = useState(true); // Add loading state
 
     useEffect(() => {
         const {id} = queryParams;
@@ -93,10 +94,12 @@ export const EditContact = () => {
                 const response = await getContactById(id);
                 if (response[0] === 200) {
                     const {name, email, phone, address} = response[1];
-                    setContact({name, email, phone, address});
+                    setContact({name:(name || ''), email: (email || ''), phone: (phone || []), address: (address || '')});
                 }
             } catch (error) {
-                console.log(error);                
+                setContact(defaultContact);                
+            } finally {
+                setIsLoading(false); // Data fetched, set loading to false
             }
         }
 
@@ -109,10 +112,9 @@ export const EditContact = () => {
     }
 
     const loadNumberField = (e, idx) => {
-        const updatedPhoneNumbers = contact.phone;
+        const updatedPhoneNumbers = [...contact.phone];
         updatedPhoneNumbers[idx] = e.target.value;
-        setContact({...contact, [e.target.name] : updatedPhoneNumbers});
-        console.log(contact);
+        setContact(prevContact => ({...prevContact, phone : updatedPhoneNumbers}));
     }
 
     const handleNumberFields = (action, idx=-1) => {
@@ -126,7 +128,6 @@ export const EditContact = () => {
             updatedPhoneNumbers.push('');
         }
         setContact({...contact, phone: updatedPhoneNumbers});
-        console.log(contact);
     }
 
     const handleSubmitForm = async () => {
@@ -148,14 +149,11 @@ export const EditContact = () => {
 
         try {
             const {id} = queryParams;
+            
             const response = await editContact(id, contact);
+            // console.log(response);
             if (response[0] === 200) {
-                setSuccess({ status: 1, message: "Contact added successfully!" });
-                setContact(defaultContact);
-            }
-            else if (response[0] === 300) {
-                setExistingContact([1, response[2]]);
-                setError({ status: 1, message: response[1] });
+                setSuccess({ status: 1, message: "Contact updated successfully!" });
             }
             else {
                 setError({ status: 1, message: response[1] });
@@ -185,8 +183,8 @@ export const EditContact = () => {
             <Paper elevation={10} style={paperStyle}>
                 <Grid container sx={{ width: '100%' }}>
                     {
-                        !existingContact[0] ?
-                            (<Grid item sx={{ width: '100%', display: "flex", justifyContent: 'center' }}>
+                        !isLoading && 
+                        (<Grid item sx={{ width: '100%', display: "flex", justifyContent: 'center' }}>
                                 <FormGroup sx={{ minWidth: '200px', width: '100%', maxWidth: '400px' }}>
                                     <h4 style={headerStyle}>ADD CONTACT</h4>
 
@@ -247,75 +245,7 @@ export const EditContact = () => {
                                         Update Contact
                                     </Button>
                                 </FormGroup>
-                            </Grid>) :
-                            (<Grid item sx={{ color: "#fff", width: '100%', display: "flex", justifyContent: 'center' }}>
-
-                                <Grid container sx={{ alignItems: 'center' }}>
-                                    <Grid item xs={12} sx={{ marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
-                                        {
-                                            error.status === 1 &&
-                                            <Alert severity='error' sx={{ width: 'fit-content', minWidth: '200px', fontSize: '12px', height: 'fit-content' }}>{error.message}</Alert>
-                                        }
-                                    </Grid>
-
-                                    <Grid item xs={12} sx={{ height: 'fit-content', marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
-                                        <StyledHeader>Contact Info</StyledHeader>
-                                    </Grid>
-                                    <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                                        <Button variant='contained' sx={{ height: 'fit-content', display: 'flex', justifyContent: 'space-between', minWidth: '150px', width: '300px' }}
-                                            id="basic-button"
-                                            aria-controls={open ? 'basic-menu' : undefined}
-                                            aria-haspopup="true"
-                                            aria-expanded={open ? 'true' : undefined}
-                                            onClick={handleClick}
-                                        >
-                                            <span>{('name' in existingContact[1]) ? existingContact[1].name : 'Unknown'}</span>
-                                            <span>{open ? <ArrowDropUp /> : <ArrowDropDown />}</span>
-                                        </Button>
-                                        <StyledMenu
-                                            id="basic-menu"
-                                            anchorEl={anchorEl}
-                                            open={open}
-                                            onClose={handleClose}
-                                            MenuListProps={{
-                                                'aria-labelledby': 'basic-button',
-                                            }}
-                                        >
-                                            {
-                                                ('phone' in existingContact[1]) &&
-                                                existingContact[1].phone.map((phoneNumber, index) => (
-                                                    <MenuItem onClick={handleClose} key={index} className={contact.phone === phoneNumber ? 'phoneMatched' : ''}>
-                                                        <Card sx={{ paddingX: '10px', width: '100%' }}>
-                                                            <Typography sx={{ fontSize: '14px' }}>Phone</Typography>
-                                                            <Typography sx={{ fontSize: '14px' }}>{phoneNumber}</Typography>
-                                                        </Card>
-                                                    </MenuItem>
-                                                ))
-                                                
-                                            }
-                                            <MenuItem onClick={handleClose}>
-                                                <Card sx={{ paddingX: '10px', width: '100%' }}>
-                                                    <Typography sx={{ fontSize: '14px' }}>Email</Typography>
-                                                    <Typography sx={{ fontSize: '14px' }}>{('email' in existingContact[1]) && existingContact[1].email ? existingContact[1].email : '--'}</Typography>
-                                                </Card>
-                                            </MenuItem>
-
-                                            <MenuItem onClick={handleClose}>
-                                                <Card sx={{ paddingX: '10px', width: '100%' }}>
-                                                    <Typography sx={{ fontSize: '14px' }}>Address</Typography>
-                                                    <Typography sx={{ fontSize: '14px' }}>{('address' in existingContact[1]) && existingContact[1].address ? existingContact[1].address : '--'}</Typography>
-                                                </Card>
-                                            </MenuItem>
-                                        </StyledMenu>
-                                    </Grid>
-                                    <div style={{ textAlign: 'center', width: '100%', marginTop: '15px' }}>
-                                        <Button sx={{ color: "#fff", boxShadow: 'inset 0 0 6px 0 #000', paddingX: '20px' }} onClick={handleBackButton} >
-                                            <ArrowRightAlt sx={{ marginRight: '10px', transform: 'scaleX(-1)' }} /> Back
-                                        </Button>
-                                    </div>
-
-                                </Grid>
-                            </Grid>)
+                        </Grid>)
                     }
                 </Grid>
             </Paper>

@@ -25,21 +25,16 @@ export const addContact = async (data) => {
         const response = await axios.post(`${URL}/create`, data);
         return [200, response.data.contact];
     } catch (error) {
-        if(error.response.status === 300){
-            if(('existing' in error.response.data) && error.response.data.existing === true){
-                return [300, error.response.data.error, error.response.data.contact];
-            }
-            return [400, error.response.data.error];
-        }
         return [400, error.response.data.error];
     }
 };
 
 export const editContact = async (id, data) => {
     try {
-        const response = await axios.post(`${URL}/update/:id`, data);
+        const response = await axios.post(`${URL}/update/${id}`, data);
+        return [200, response.data.contact];
     } catch (error) {
-        
+        return [400, error.response.data.error];
     }
 }
 
@@ -55,3 +50,24 @@ export const checkIfExist = async (number) => {
         return [400, "Not Found"];
     }
 }
+
+
+export const deleteContactApi = async (id) => {
+    try {
+        const response = await axios.get(`${URL}/delete/${id}`);
+        return [200, "Contact deleted successfully!"];
+    } catch (error) {
+        return [400, "Failed To Delete!"];
+    }
+};
+
+export const searchByNumber = async (value) => {
+    try {
+        const response = await axios.get(`${URL}/search/${value}`);
+        return [200, response.data.contacts];
+    } catch (error) {
+        console.log(error);
+        return [400, "No Data Found"];
+        
+    }
+};
