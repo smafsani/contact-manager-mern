@@ -8,6 +8,7 @@ import { Contacts } from './components/Contacts';
 import { AddContact } from './components/AddContact';
 import { EditContact } from './components/EditContact';
 import { Histories } from './components/Histories';
+import { Home } from './components/Home';
 
 const StyledCard = styled(Card)`
     background-color: transparent;
@@ -24,6 +25,7 @@ function App() {
                     <StyledCard>
                         <CardContent>
                             <Routes>
+                                <Route path='/' element={<Home />} />
                                 <Route path='/contacts' element={<Contacts />} />
                                 <Route path='/about' element={<About />} />
                                 <Route path='/add-contact' element={<AddContact />} />

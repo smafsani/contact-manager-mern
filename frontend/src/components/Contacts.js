@@ -144,6 +144,7 @@ export const Contacts = () => {
 
   const deleteContactById = async () => {
     setDeleteStatus([0, '']);
+    setCurrentInfoIdx(-1);
 
     if (deleteContact[0] === 1) {
       try {

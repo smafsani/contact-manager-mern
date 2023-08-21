@@ -85,6 +85,43 @@ export const addToHistory = async (data) => {
         const response = await axios.post(`${URL}/history/store`, data);
         return [200, response.data.histories];
     } catch (error) {
-        return [400, "Cannot be added to history!"];
+        return [400, error.response.data.error];
+    }
+};
+
+export const deleteHistoryApi = async (id) => {
+    try {
+        const response = await axios.get(`${URL}/history/delete/${id}`);
+        return [200, "History deleted successfully!"];
+    } catch (error) {
+        return [400, "Failed To Delete!"];
+    }
+};
+
+
+export const getRecentContacts = async () => {
+    try {
+        const response = await axios.get(`${URL}/recent/contacts`);
+        return [200, response.data.contacts];
+    } catch (error) {
+        return [400, error.response.data.error];
+    }
+};
+
+export const getMostUsedContacts = async () => {
+    try {
+        const response = await axios.get(`${URL}/most-used/contacts`);
+        return [200, response.data.contacts];
+    } catch (error) {
+        return [400, error.response.data.error];
+    }
+};
+
+export const getRecentHistories = async () => {
+    try {
+        const response = await axios.get(`${URL}/recent/histories`);
+        return [200, response.data.histories];
+    } catch (error) {
+        return [400, error.response.data.error];
     }
 };

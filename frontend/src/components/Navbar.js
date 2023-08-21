@@ -1,5 +1,5 @@
 import { AppBar, Button, Toolbar, Typography, } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import styled from '@emotion/styled';
 
@@ -37,6 +37,7 @@ const StyledButton = styled(Button)`
 `;
 
 export const Navbar = () => {
+
   return (
     <AppBar position="static" sx={{ backgroundColor: 'transparent' }}>
       <Toolbar>
@@ -62,7 +63,7 @@ export const Navbar = () => {
           <StyledButton className='tabButton' component={NavLink} to='/about' label="About">About</StyledButton>
         </div>
 
-        <Button className='authButton' component={NavLink} to='/' variant='contained' sx={{ marginLeft: 'auto', marginRight: '10px', backgroundColor: "#47b4fd" }}>Profile</Button>
+        {/* <Button className='authButton' component={NavLink} to='/' variant='contained' sx={{ marginLeft: 'auto', marginRight: '10px', backgroundColor: "#47b4fd" }}>Profile</Button> */}
       </Toolbar>
     </AppBar>
   )

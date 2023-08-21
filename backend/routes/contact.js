@@ -1,4 +1,4 @@
-const { getContacts, addToContact, getContactById, editContact, checkNumber, deleteContact, getContactBySearch, addToHistory, getHistories } = require("../controllers/contact");
+const { getContacts, addToContact, getContactById, editContact, checkNumber, deleteContact, getContactBySearch, addToHistory, getHistories, deleteHistory, getRecentContacts, getRecentHistories, getMostUsedContacts } = require("../controllers/contact");
 
 const router = require("express").Router();
 
@@ -19,5 +19,14 @@ router.get("/delete/:id", deleteContact);
 router.post("/history/store", addToHistory);
 
 router.get("/histories", getHistories);
+
+router.get("/history/delete/:id", deleteHistory);
+
+router.get("/recent/contacts", getRecentContacts);
+
+router.get("/most-used/contacts", getMostUsedContacts);
+
+router.get("/recent/histories", getRecentHistories);
+
 
 module.exports = router;
