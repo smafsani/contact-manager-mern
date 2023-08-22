@@ -222,7 +222,7 @@ export const Home = () => {
                             <Typography sx={{ marginBottom: '10px' ,color: "#fff", textAlign: 'left', fontSize: '18px', fontWeight: 'bold', borderBottom: '1px solid #fff' }}>
                                 Most Used Contacts
                             </Typography>
-                            <div style={{ padding: '0 10px', width: '100%' }}>
+                            <div style={{ padding: '0 10px', width: '100%', marginBottom: '30px' }}>
                                 {mostUsedContacts.length > 0 &&
                                     mostUsedContacts.map((contact, index) => (
                                         <StyledCard key={index} sx={{ overflow: 'inherit' }}>

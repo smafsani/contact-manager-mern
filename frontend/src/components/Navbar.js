@@ -1,7 +1,8 @@
-import { AppBar, Button, Toolbar, Typography, } from '@mui/material'
+import { AppBar, Button, Toolbar, Typography, useMediaQuery, useTheme, } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { DrawerComp } from './DrawerComp';
 
 const StyledButton = styled(Button)`
     color : #fff;
@@ -38,33 +39,44 @@ const StyledButton = styled(Button)`
 
 export const Navbar = () => {
 
+  const theme = useTheme();
+  const isDrawerTurn = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <AppBar position="static" sx={{ backgroundColor: 'transparent' }}>
       <Toolbar>
-        <Typography
-          variant="h6"
-          sx={{
-            mr: 2,
-            textTransform: 'uppercase',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            display: { xs: 'none', md: 'flex' },
-            color: 'inherit',
-            userSelect: 'none',
-          }}
-        >
-          Contact Manager
-        </Typography>
+        {!isDrawerTurn ?
+          <>
+            <Typography component={NavLink}
+              variant="h6"
+              sx={{
+                textDecoration: 'none',
+                mr: 2,
+                textTransform: 'uppercase',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                display: { xs: 'none', sm: 'flex' },
+                color: 'inherit',
+                userSelect: 'none',
+              }}
+              to='/'
+            >
+              Contact Manager
+            </Typography>
 
-        <div>
-          <StyledButton className='tabButton' component={NavLink} to='/contacts' label="Contacts">Contacts</StyledButton>
-          <StyledButton className='tabButton' component={NavLink} to='/add-contact' label="Add Contact">Add Contact</StyledButton>
-          <StyledButton className='tabButton' component={NavLink} to='/history' label="History">History</StyledButton>
-          <StyledButton className='tabButton' component={NavLink} to='/about' label="About">About</StyledButton>
-        </div>
+            <div>
+              <StyledButton sx={{ display: { xs: 'none', sm: 'inline' } }} className='tabButton' component={NavLink} to='/contacts' label="Contacts">Contacts</StyledButton>
+              <StyledButton sx={{ display: { xs: 'none', sm: 'inline' } }} className='tabButton' component={NavLink} to='/add-contact' label="Add Contact">Add Contact</StyledButton>
+              <StyledButton sx={{ display: { xs: 'none', sm: 'inline' } }} className='tabButton' component={NavLink} to='/history' label="History">History</StyledButton>
+              <StyledButton sx={{ display: { xs: 'none', sm: 'inline' } }} className='tabButton' component={NavLink} to='/about' label="About">About</StyledButton>
+            </div>
+          </> :
+          <DrawerComp />
+        }
 
-        {/* <Button className='authButton' component={NavLink} to='/' variant='contained' sx={{ marginLeft: 'auto', marginRight: '10px', backgroundColor: "#47b4fd" }}>Profile</Button> */}
       </Toolbar>
+
+
     </AppBar>
   )
 }
